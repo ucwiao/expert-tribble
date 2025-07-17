@@ -1,15 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Secret Chat</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h2>Secret Chat</h2>
-  <div id="chat"></div>
-  <input id="msg" placeholder="Your secret..." />
-  <button onclick="send()">Send</button>
+  <div class="container">
+    <div id="authBox">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="login()">Login</button>
+    </div>
 
-  <script src="chat.js"></script>
+    <div id="chatBox" class="hidden">
+      <div id="topBar">
+        <span id="userInfo"></span>
+        <button onclick="logout()">Logout</button>
+      </div>
+
+      <div id="roomSelector">
+        <input type="text" id="room" placeholder="Room name (e.g. general)" />
+        <button onclick="loadRoom()">Join Room</button>
+      </div>
+
+      <div id="messages"></div>
+
+      <div id="sendBox">
+        <input type="text" id="msgInput" placeholder="Type your message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
 </body>
 </html>
