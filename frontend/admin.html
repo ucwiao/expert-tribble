@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h2>Admin Panel</h2>
+
+  <section>
+    <h3>Create New User</h3>
+    <input id="new-username" placeholder="Username">
+    <input id="new-password" placeholder="Password" type="password">
+    <select id="new-role">
+      <option value="user">User</option>
+      <option value="mod">Moderator</option>
+    </select>
+    <button onclick="createUser()">Create</button>
+  </section>
+
+  <section>
+    <h3>All Users</h3>
+    <ul id="user-list"></ul>
+  </section>
+
+  <script>
+    async function createUser() {
+      const username = document.getElementById("new-username").value;
+      const password = document.getElementById("new-password").value;
+      const role = document.getElementById("new-role").value;
+
+      await fetch("/api/admin/create-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password, role })
+      });
+      alert("User created!");
+      fetchUsers();
+    }
+
+    async function fetchUsers() {
+      const res = await fetch("/api/admin/users");
+      const users = await res.json();
+      document.getElementById("user-list").innerHTML = users
+        .map(u => `<li>${u.username} (${u.role})</li>`)
+        .join("");
+    }
+
+    fetchUsers();
+  </script>
+</body>
+</html>
