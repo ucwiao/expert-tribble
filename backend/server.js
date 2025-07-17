@@ -1,21 +1,25 @@
 const express = require("express");
-const cors = require("cors");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-dotenv.config();
-
 const authRoutes = require("./routes/auth");
-const messageRoutes = require("./routes/messages");
-
+const chatRoutes = require("./routes/chat");
+const adminRoutes = require("./routes/admin");
+const cors = require("cors");
 const app = express();
+
 app.use(cors());
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("🟢 MongoDB Connected"))
-  .catch(err => console.log("❌ Mongo Error", err));
-
+// Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/messages", messageRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/admin", adminRoutes);
 
-app.listen(3000, () => console.log("🚀 Server running on port 3000"));
+// Connect to MongoDB
+mongoose.connect("YOUR_MONGODB_URI", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log("✅ Connected to MongoDB");
+  app.listen(3000, () => console.log("🚀 Server running on port 3000"));
+}).catch((err) => console.error("❌ MongoDB Error:", err));
